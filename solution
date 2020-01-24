@@ -1,0 +1,51 @@
+	   
+  $(document).ready(function(){
+  
+let limit = 7;
+let givenDate = new Date('2015-11-30');
+let arry = $("tr");
+let count=0;
+for(var i=0; i<arry.length; i++){
+  let css = $(arry[i]).css('background-color');
+  let cells = $(arry[i]).find("td");
+  let date1 = cells[1].innerHTML;
+  let date2 = cells[2].innerHTML;
+  console.log("date1",date1);
+	console.log("date2", date2);
+	console.log("css",css);
+  let days=0;
+if(date2==""){
+  days = (givenDate - new Date(date1))
+ 							/ (1000 * 60 * 60 * 24);
+                     console.log("days count", days); 
+  if(days > limit){
+  	 if(css!="rgb(255, 0, 0)"){
+ 				count++;
+   		 console.log("count:", count);
+		}
+    
+  }           
+	
+}else {
+ days = (new Date(date2) - new Date(date1))
+ 							/ (1000 * 60 * 60 * 24);
+              console.log("days count", days);
+  if(days <= limit){
+     if(css=="rgb(255, 0, 0)"){
+ 				count++;
+    		console.log("count: ", count);
+			}
+  } else{
+   if(css!="rgb(255, 0, 0)"){
+ 				count++;
+    		console.log("count: ", count);
+			}
+  }
+}
+
+}
+console.log('total Count: ',count);
+
+  }
+  
+);
