@@ -1,0 +1,26 @@
+package org.test.interview;
+
+public class Array {
+
+	public static void main(String[] args) {
+		Array t = new Array();
+		int[] ary = {1,4,-1,3,2};
+		System.out.println(t.solution(ary));
+	}
+	
+	int solution(int[] ary) {
+		int count =0;
+		if(ary.length<1) {
+			return count;
+		}else {
+			int i = ary[0];
+			count++;
+			while(ary[i]!=-1) {
+				i =ary[i];
+				count++;
+			}
+			count++;
+		}
+	return count;	
+	}
+}
