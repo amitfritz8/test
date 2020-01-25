@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 
-public class PathSum4 {
+public class Test1 {
 
 	static int[][] ary2d1 = { 
 			{ 1,1,1 }, 
@@ -20,8 +20,8 @@ public class PathSum4 {
 	int[][] dirs = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
 	
 	public static void main(String[] args) {
-		PathSum4 p = new PathSum4();
-		System.out.println(p.solution(ary2d2));
+		Test1 p = new Test1();
+		System.out.println(p.solution(ary2d3));
 	}
 	int returnIntVal(List<Integer> path){
 		String str = "";
@@ -44,30 +44,33 @@ public class PathSum4 {
 			for(int j=0; j<col; j++) {
 				boolean[][] visited = new boolean[row][col];
 				LinkedList<Integer> lstpath = new LinkedList<Integer>();
-				dfs(board,visited,row,col,i,j, dirs, lstpath, pq);
+				int pathBitInt = dfs(board,visited,row,col,i,j, dirs, lstpath);
+				if(pathBitInt>biggestIntSoFar) {
+					biggestIntSoFar = pathBitInt;
+				}
 			}
 		}
-		biggestIntSoFar = pq.poll();
 		return biggestIntSoFar;
 	}
 	
-	PriorityQueue<Integer> dfs(int[][] board, boolean visited[][], int row, int col, 
-			int x, int y, int[][] dirs, LinkedList<Integer> lstPath, PriorityQueue<Integer> pq){
+	int dfs(int[][] board, boolean visited[][], int row, int col, 
+			int x, int y, int[][] dirs, LinkedList<Integer> lstPath){
+		int sum = 0;
 		visited[x][y]=true;
 		lstPath.add(board[x][y]);
 		if(lstPath.size()==4) {
-			pq.add(returnIntVal(lstPath));
 			System.out.println(lstPath.toString());
-			return pq;
+			return returnIntVal(lstPath);
 		}
 
 		for(int i=0; i < dirs.length; i++) {
 			if(isSafe(x+dirs[i][0], y + dirs[i][1], row, col, visited)) {
-				 dfs(board, visited, row, col, x+dirs[i][0], y + dirs[i][1], dirs, lstPath, pq);
+				sum = Math.max(sum, dfs(board, visited, row, col, x+dirs[i][0], 
+					y + dirs[i][1], dirs, lstPath));
 				 lstPath.removeLast();
 			}
 		}
-		return pq;
+		return sum;
 	}
 	
 	boolean isSafe(int x, int y, int row, int col, boolean[][]visited){
