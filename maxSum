@@ -1,0 +1,80 @@
+package org.test.interview;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.PriorityQueue;
+
+public class PathSum4 {
+
+	static int[][] ary2d1 = { 
+			{ 1,1,1 }, 
+			{ 1,3,4 }, 
+			{ 1,4,3 } };
+	
+	static int[][] ary2d2 = { { 0, 1, 5, 0, 0 } };
+	
+	static int[][] ary2d3 = { { 9, 1, 1, 0, 7 }, 
+							  { 1, 0, 2, 1, 0 }, 
+							  { 1, 9, 1, 1, 0 } };
+	
+	int[][] dirs = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
+	
+	public static void main(String[] args) {
+		PathSum4 p = new PathSum4();
+		System.out.println(p.solution(ary2d2));
+	}
+	int returnIntVal(List<Integer> path){
+		String str = "";
+		if(path.size()>0) {
+			str = "";
+			for(int val : path) {
+				str = str + val;
+			}
+			return Integer.valueOf(str);
+		}else {
+			return 0;
+		}
+	}
+	int solution(int board[][]) {
+		final int row = board.length;
+		final int col = board[0].length;
+		int biggestIntSoFar = 0;
+		PriorityQueue<Integer> pq = new PriorityQueue<>(1,(o1,o2)-> o2-o1);
+		for(int i=0; i<row; i++) {
+			for(int j=0; j<col; j++) {
+				boolean[][] visited = new boolean[row][col];
+				LinkedList<Integer> lstpath = new LinkedList<Integer>();
+				dfs(board,visited,row,col,i,j, dirs, lstpath, pq);
+			}
+		}
+		biggestIntSoFar = pq.poll();
+		return biggestIntSoFar;
+	}
+	
+	PriorityQueue<Integer> dfs(int[][] board, boolean visited[][], int row, int col, 
+			int x, int y, int[][] dirs, LinkedList<Integer> lstPath, PriorityQueue<Integer> pq){
+		visited[x][y]=true;
+		lstPath.add(board[x][y]);
+		if(lstPath.size()==4) {
+			pq.add(returnIntVal(lstPath));
+			System.out.println(lstPath.toString());
+			return pq;
+		}
+
+		for(int i=0; i < dirs.length; i++) {
+			if(isSafe(x+dirs[i][0], y + dirs[i][1], row, col, visited)) {
+				 dfs(board, visited, row, col, x+dirs[i][0], y + dirs[i][1], dirs, lstPath, pq);
+				 lstPath.removeLast();
+			}
+		}
+		return pq;
+	}
+	
+	boolean isSafe(int x, int y, int row, int col, boolean[][]visited){
+		if(x>=0 && x<row && y>=0 && y<col && !visited[x][y]) {
+			return true;
+		}
+		return false;
+	}
+	
+}
